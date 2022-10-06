@@ -13,9 +13,8 @@ list = fizzbuzz [0..]
 dotsInCircle :: (Double, Double) -> Double -> [(Double,Double)] -> [(Double, Double)]
 dotsInCircle (_, _) 0 (_:_) = []
 dotsInCircle (_, _) _ [] = []
-dotsInCircle (x0, y0) r ((x,y):xs) = [if sqrt((x0 - x)^2 + (y0 - y)^2) < r  then (x, y) else (x0,y0) | (x, y) <- ((x, y):xs)]
-
---dotsInCircle (x0, y0) r ((x,y):xs) = [(x, y) | (x, y) <- ((x, y):xs), sqrt((x0 - x)^2 + (y0 - y)^2) < r]
+--dotsInCircle (x0, y0) r ((x,y):xs) = [if sqrt((x0 - x)^2 + (y0 - y)^2) < r  then (x, y) else (x0,y0) | (x, y) <- ((x, y):xs)]
+dotsInCircle (x0, y0) r ((x,y):xs) = [(x, y) | (x, y) <- ((x, y):xs), sqrt((x0 - x)^2 + (y0 - y)^2) < r]
 
 
 ----------------------------------------------
@@ -46,26 +45,18 @@ power2::Int -> Bool
 power2 0 = True
 power2 2 = True
 power2 x | x `mod` 2 == 0 = power2 $ x `div` 2
-        | otherwise = False
+         | otherwise = False
 ---------------------------------------------------------
 --4
 
-seqbyPred::Int -> Int -> Int -> [Int]
-seqbyPred _ _ 0 = []
-seqbyPred x n l = [x] ++ seqbyPred (x + n) n (l-1)
-
-
-sequensebyPred::Int -> Int -> [Int]
-sequensebyPred n k = n: sequensebyPred (n + k) k
-listseq k = sequensebyPred 1 k
-
-res = listseq $ (\x -> x*3) 2
-
+sequensebyPred::(Int -> Int) -> Int -> [Int]
+sequensebyPred f k = k: sequensebyPred f (f k)
+res4 = take 20 $ sequensebyPred (\x -> x * 3) 5
 ---------------------------------------------------------
 --5
-fibonacci::Int -> Int -> [Int]
-fibonacci n k = n:fibonacci k (n+k)
-fib = fibonacci 0 1
+fibonacci::(Int -> Int -> Int) -> Int -> Int -> [Int]
+fibonacci f x1 x2 = x1:fibonacci f x2 (f x1 x2)
+fib = take 50 $ fibonacci (\x1 x2 -> x1 + x2) 1 1
 ---------------------------------------------------------
 --6
 collatz::Int -> Int -> Int -> (Int, Int)
