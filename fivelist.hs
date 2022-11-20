@@ -10,7 +10,8 @@ fromList = foldl (\acc x -> MyList x acc) EmptyList
 --fromList [1,2,3,4]
 
 toList :: MyList a -> [a]
-toList (MyList x xs) = foldl (\acc x -> acc ++ [x]) [] (MyList x xs)
+toList (MyList x xs) = reverse lst where
+  lst = foldr (\x acc -> acc ++ [x]) [] (MyList x xs)
 --toList (MyList 2 (MyList 3 (MyList 4 EmptyList)))
 
 reverseMyList :: MyList a -> MyList a
