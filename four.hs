@@ -1,3 +1,4 @@
+import Data.Char as C
 --1
 printf::String -> String -> String
 printf str args = if (pr str)++(prf str args) == "" then str else (pr str)++(prf str args) where
@@ -25,13 +26,17 @@ todec:: Int -> [Int] -> Int
 todec base (x:xs) = foldl (\acc x -> (acc * base) + x) 1 xs
 
 --3
+
 strtoint :: String -> Int
-strtoint n = read n :: Int
+strtoint str = foldr (\x acc -> acc + (C.digitToInt (str!!x)) * (10^ (len - x))) 0 [0..len] where
+  len = length str - 1
+
+
 
 
 --4
-findloss :: [Int] -> Int -> Int -> [Int]
-findloss xs begin end = [x | x <- [begin..end], elem x xs == False]
+findloss :: [Int] -> Int
+findloss xs = head [x | x <- [1..], elem x xs == False]
 
 
 --different
