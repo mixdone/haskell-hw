@@ -29,8 +29,8 @@ dos2unix  str = do
   fin <- openFile str ReadMode
   content <- hGetContents fin
   hClose fin
-  fout <-openFile str WriteMode
-  hPutStr fout (unpack (replace (pack str) (pack "\r\n") (pack "\n")))
+  fout <- openFile str WriteMode
+  hPutStr fout (unpack (replace (pack "\r\n") (pack "\n") (pack str)))
   hClose fout
 
 
@@ -40,7 +40,7 @@ unix2dos str = do
   content <- hGetContents fin
   hClose fin
   fout <-openFile str WriteMode
-  hPutStr fout (unpack (replace (pack str) (pack "\n") (pack "\r\n")))
+  hPutStr fout (unpack (replace (pack "\n") (pack "\r\n") (pack str)))
   hClose fout
 
 -- task 4 Binary check
