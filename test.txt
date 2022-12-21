@@ -1,0 +1,17 @@
+import System.IO.Unsafe (unsafePerformIO)
+-- Monad Perfomance
+-- Monad Variable
+-- Monad Pivo
+
+data Pivo a = Pivo a
+
+instance Functor Pivo where
+  fmap f (Pivo x) = Pivo $ f x
+
+instance Applicative Pivo where
+  pure x = Pivo x
+  (Pivo f) <*> (Pivo x) = Pivo $ f x
+
+instance Monad Pivo where
+  (>>=):: Pivo a -> (a -> Pivo b) -> Pivo b
+  (Pivo x) >>= f = unsafePerformIO $ (putStrLn "Cheers!" >> return (f x))
