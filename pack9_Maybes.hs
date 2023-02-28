@@ -77,7 +77,7 @@ f2 str = case str of
 
 queryGreek :: GreekData -> String -> Maybe Double
 queryGreek gData str = case gData of
-                  greekDataA -> intermediate $ undolist $ f1 str
+                  greekDataC -> intermediate $ undolist $ f1 str
                   greekDataB -> intermediate $ undolist $ f2 str
                   _          -> Nothing
 
@@ -94,7 +94,7 @@ queryGreekPro gData str = do
   first_arg   <- tailMay xs
   second_arg  <- headMay xs
   ans         <- divMay (fromIntegral first_arg) (fromIntegral second_arg)
-  return ansqueryGreekPro
+  return ans
 
 -- * a harder task. rewrite queryGreekPro, but without the do-notation, only using the (>>=) operator and its friends
 -- in other words, desugarize your notation
