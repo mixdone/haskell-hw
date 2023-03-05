@@ -59,27 +59,12 @@ undolist (Just xs) = xs
 intermediate :: [Integer] -> Maybe Double
 intermediate xs = divMay (fromIntegral $ undoInt $ tailMay xs) (fromIntegral $ undoInt $ headMay xs)
 
-f1 :: String -> Maybe [Integer]
-f1 str = case str of
-                  "alpha" -> Just [5, 10]
-                  "beta"  -> Just [0, 8]
-                  "gamma" -> Just [18, 47, 60]
-                  "delta" -> Just [42]
-                  _       -> Nothing
-
-f2 :: String -> Maybe [Integer]
-f2 str = case str of
-                  "phi"   -> Just [53, 13]
-                  "chi"   -> Just [21, 8, 191]
-                  "psi"   -> Just []
-                  "omega" -> Just [6, 82, 144]
-                  _       -> Nothing
 
 queryGreek :: GreekData -> String -> Maybe Double
-queryGreek gData str = case gData of
-                  greekDataC -> intermediate $ undolist $ f1 str
-                  greekDataB -> intermediate $ undolist $ f2 str
-                  _          -> Nothing
+queryGreek gData str | gData == greekDataA = intermediate $ undolist $ lookup str gData
+                     | gData == greekDataB = intermediate $ undolist $ lookup str gData
+                     | otherwise           = Nothing
+
 
 
 -- Предполлагаю, что этот case должен выгледеть так, но case всегда выбирает greekDataA... С if работает нормально ниже
@@ -90,7 +75,7 @@ queryGreek gData str = case gData of
 -- Now do the same whole thing, but using do-notation, since Maybe is a Monad
 queryGreekPro :: GreekData -> String -> Maybe Double
 queryGreekPro gData str = do
-  xs          <- if gData == greekDataA then f1 str else f2 str
+  xs          <- if gData == greekDataA then lookup str gData else lookup str gData
   first_arg   <- tailMay xs
   second_arg  <- headMay xs
   ans         <- divMay (fromIntegral first_arg) (fromIntegral second_arg)
@@ -99,4 +84,7 @@ queryGreekPro gData str = do
 -- * a harder task. rewrite queryGreekPro, but without the do-notation, only using the (>>=) operator and its friends
 -- in other words, desugarize your notation
 queryGreekProPlus :: GreekData -> String -> Maybe Double
-queryGreekProPlus = undefined
+queryGreekProPlus gData str = (lookup str gData) >>= (fromIntegral $ undoInt tailMay) >>= divMay ((lookup str gData) >>= (fromIntegral $ undoInt headMay))
+
+
+-- Доделать 
