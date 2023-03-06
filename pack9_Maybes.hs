@@ -84,7 +84,8 @@ queryGreekPro gData str = do
 -- * a harder task. rewrite queryGreekPro, but without the do-notation, only using the (>>=) operator and its friends
 -- in other words, desugarize your notation
 queryGreekProPlus :: GreekData -> String -> Maybe Double
-queryGreekProPlus gData str = (lookup str gData) >>= (fromIntegral $ undoInt tailMay) >>= divMay ((lookup str gData) >>= (fromIntegral $ undoInt headMay))
-
-
--- Доделать 
+queryGreekProPlus gData str = (lookup str gData) >>= (\x1 ->
+                                      tailMay x1 >>= (\x2 ->
+                                      headMay x1 >>= (\x3 ->
+                                      divMay (fromIntegral x2) (fromIntegral x3))))
+                                      
